@@ -3,212 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desarrollo de Conversiones de Sistemas Numéricos</title>
-    <!-- Tailwind CSS para los estilos -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configuración explícita para que MathJax reconozca el símbolo de dólar en línea -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
-    <!-- Script de MathJax -->
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans p-6 md:p-12">
+    <title>¡La Aventura de los Ceros y Unos!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
-    <div class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-md border border-gray-200">
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f4f9f9;
+            color: #2d3436;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 4px solid #ffeaa7;
+        }
+        h1 {
+            color: #ff7675;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .intro {
+            text-align: center;
+            font-size: 1.2em;
+            color: #636e72;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-card {
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* Colores divertidos para cada paso */
+        .card-1 { background-color: #ffeaa7; border-left: 8px solid #fdcb6e; }
+        .card-2 { background-color: #81ecec; border-left: 8px solid #00cec9; }
+        .card-3 { background-color: #a29bfe; border-left: 8px solid #6c5ce7; color: white; }
+        .card-4 { background-color: #fab1a0; border-left: 8px solid #e17055; }
         
-        <h1 class="text-3xl font-bold text-blue-900 mb-8 border-b-2 border-blue-100 pb-4">Desarrollo y Procedimiento de Solución</h1>
+        .card-3 h2 { color: white; }
+        .card-4 h2 { color: #2d3436; }
 
-        <!-- Ejercicio 1 -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">1. Conversión de números binarios a código Gray</h2>
+        .table-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        table {
+            border-collapse: collapse;
+            background: white;
+            color: #2d3436;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 2px solid #dfe6e9;
+            padding: 12px 20px;
+            text-align: center;
+        }
+        th { background-color: #74b9ff; color: white; }
+        .highlight { background-color: #ffeaa7; color: #d63031; }
+        
+        .equation {
+            background: #2d3436;
+            color: #00cec9;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.5em;
+            letter-spacing: 2px;
+        }
+        .lego-block {
+            background: rgba(255,255,255,0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px dashed #2d3436;
+        }
+        ul { font-size: 1.1em; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎮 ¡Misión: El Circuito Mágico! 🤖</h1>
+        <p class="intro">Imagina que vamos a construir un juguete nuevo usando bloques. Para saber cómo armarlo, tenemos unas instrucciones secretas que debemos descifrar paso a pasito.</p>
+
+        <!-- PASO 1 -->
+        <div class="step-card card-1">
+            <h2>📜 Paso 1: La Lista de Invitados (Tabla de Verdad)</h2>
+            <p>Nuestra tabla es como una lista para una fiesta. Las columnas <strong>x, y, z</strong> son los invitados, y la columna <strong>S</strong> es el portero que dice si pueden entrar (1) o no (0).</p>
+            <p>¡Solo nos interesan las filas donde el portero dice <strong>1 (¡Pásale!)</strong>!</p>
             
-            <div class="bg-blue-50 p-6 rounded-lg mb-6 border border-blue-100">
-                <h3 class="text-lg font-semibold text-blue-800 mb-2">Definición Matemática:</h3>
-                <p class="mb-4">Sea un número binario de $n$ bits representado como $B = b_1 b_2 \dots b_n$, donde $b_1$ es el bit más significativo. El código Gray correspondiente $G = g_1 g_2 \dots g_n$ se calcula mediante las siguientes ecuaciones:</p>
-                <div class="text-center overflow-x-auto">
-                    $$g_1 = b_1$$
-                    $$g_i = b_{i-1} \oplus b_i \quad \text{para } i \geq 2$$
-                </div>
-                <p class="mt-4 text-sm text-gray-600"><em>* Donde $\oplus$ representa la operación lógica XOR (O exclusivo): devuelve $0$ si los bits son iguales, y $1$ si son diferentes.</em></p>
-            </div>
+            <ul>
+                <li>Si el invitado tiene un <strong>0</strong>, le ponemos una gorrita para diferenciarlo (le llamaremos con una comilla, así: <strong>x'</strong>).</li>
+                <li>Si el invitado tiene un <strong>1</strong>, entra normal (se queda como <strong>x</strong>).</li>
+            </ul>
 
-            <!-- Inciso a -->
-            <div class="mb-8">
-                <h3 class="text-xl font-bold mb-3">a) 0101</h3>
-                <p class="mb-2">Definimos los bits del número binario: $b_1=0$, $b_2=1$, $b_3=0$, $b_4=1$.</p>
-                <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
-                    <li>$g_1 = b_1 \rightarrow \mathbf{0}$</li>
-                    <li>$g_2 = b_1 \oplus b_2 = 0 \oplus 1 \rightarrow \mathbf{1}$</li>
-                    <li>$g_3 = b_2 \oplus b_3 = 1 \oplus 0 \rightarrow \mathbf{1}$</li>
-                    <li>$g_4 = b_3 \oplus b_4 = 0 \oplus 1 \rightarrow \mathbf{1}$</li>
-                </ul>
-                <p class="font-semibold text-lg">Resultado en código Gray: <span class="text-blue-700 tracking-widest">0111</span></p>
-            </div>
+            <p><strong>Nuestros invitados ganadores son:</strong></p>
+            <ul>
+                <li>Fila 000: Todos llevan gorra 👉 <strong>x'y'z'</strong></li>
+                <li>Fila 001: Solo x e y llevan gorra 👉 <strong>x'y'z</strong></li>
+                <li>Fila 011: Solo x lleva gorra 👉 <strong>x'yz</strong></li>
+                <li>Fila 100: Solo y y z llevan gorra 👉 <strong>xy'z'</strong></li>
+                <li>Fila 110: Solo z lleva gorra 👉 <strong>xyz'</strong></li>
+                <li>Fila 111: ¡Nadie lleva gorra! 👉 <strong>xyz</strong></li>
+            </ul>
+        </div>
 
-            <!-- Inciso b -->
-            <div>
-                <h3 class="text-xl font-bold mb-3">b) 101101</h3>
-                <p class="mb-2">Definimos los bits del número binario: $b_1=1$, $b_2=0$, $b_3=1$, $b_4=1$, $b_5=0$, $b_6=1$.</p>
-                <ul class="list-disc list-inside space-y-2 ml-4 mb-4">
-                    <li>$g_1 = b_1 \rightarrow \mathbf{1}$</li>
-                    <li>$g_2 = b_1 \oplus b_2 = 1 \oplus 0 \rightarrow \mathbf{1}$</li>
-                    <li>$g_3 = b_2 \oplus b_3 = 0 \oplus 1 \rightarrow \mathbf{1}$</li>
-                    <li>$g_4 = b_3 \oplus b_4 = 1 \oplus 1 \rightarrow \mathbf{0}$</li>
-                    <li>$g_5 = b_4 \oplus b_5 = 1 \oplus 0 \rightarrow \mathbf{1}$</li>
-                    <li>$g_6 = b_5 \oplus b_6 = 0 \oplus 1 \rightarrow \mathbf{1}$</li>
-                </ul>
-                <p class="font-semibold text-lg">Resultado en código Gray: <span class="text-blue-700 tracking-widest">111011</span></p>
-            </div>
-        </section>
-
-        <hr class="my-10 border-gray-200">
-
-        <!-- Ejercicio 2 -->
-        <section>
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">2. Expresión de números decimales en códigos BCD y Exceso-3</h2>
+        <!-- PASO 2 -->
+        <div class="step-card card-2">
+            <h2>🗺️ Paso 2: El Mapa del Tesoro (Mapa de Karnaugh)</h2>
+            <p>Escribir todos esos invitados juntos es muy largo. ¡Vamos a usar un mapa mágico para simplificarlo! Es como un tablero donde colocamos una ficha (un <strong>1</strong>) en las casillas de los invitados ganadores.</p>
             
-            <div class="bg-gray-100 p-6 rounded-lg mb-6 border border-gray-200">
-                <p class="mb-2">Para convertir un número decimal $D = d_k d_{k-1} \dots d_0$:</p>
-                <ul class="list-disc list-inside space-y-2 ml-4">
-                    <li><strong>Código BCD:</strong> Cada dígito decimal $d_i$ se convierte directamente a su representación binaria de 4 bits.</li>
-                    <li><strong>Código Exceso-3:</strong> A cada dígito decimal $d_i$ se le suma $3$ algebraicamente, y el resultado $(d_i + 3)$ se convierte a su representación binaria de 4 bits.</li>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>x \ yz</th> <th>00</th> <th>01</th> <th>11</th> <th>10</th>
+                    </tr>
+                    <tr>
+                        <th>0</th> <td class="highlight">1</td> <td class="highlight">1</td> <td class="highlight">1</td> <td>0</td>
+                    </tr>
+                    <tr>
+                        <th>1</th> <td class="highlight">1</td> <td>0</td> <td class="highlight">1</td> <td class="highlight">1</td>
+                    </tr>
+                </table>
+            </div>
+
+            <p><strong>¡El juego de los abrazos!</strong> Las reglas dicen que debemos formar equipos agrupando los unos en parejas (de 2 en 2). ¡Pero cuidado, solo se pueden abrazar si están juntos (arriba, abajo, izquierda o derecha)!</p>
+            
+            <ul>
+                <li>🔴 <strong>Equipo Rojo:</strong> Agarramos el 1 de la casilla (0,01) y el de (0,11).</li>
+                <li>🔵 <strong>Equipo Azul:</strong> Agarramos el 1 de la casilla (1,11) y el de (1,10).</li>
+                <li>🟢 <strong>Equipo Verde:</strong> ¡El mapa es mágico y se dobla como un tubo! El 1 de la orilla de arriba (0,00) se puede abrazar con el 1 de la orilla de abajo (1,00).</li>
+            </ul>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="step-card card-3">
+            <h2>✨ Paso 3: ¡Magia de Desaparición! (La Ecuación)</h2>
+            <p>Cuando un equipo se abraza, revisamos sus letras. Si un invitado cambió su gorrita (pasó de 0 a 1, o de 1 a 0) mientras se abrazaban... <strong>¡Puf! ¡Desaparece!</strong> Solo se quedan los que no cambian.</p>
+
+            <ul>
+                <li><strong>Equipo Rojo (x=0, yz=01 y 11):</strong> La 'x' se queda en 0 (x'), la 'z' se queda en 1 (z). Pero la 'y' cambió de 0 a 1... ¡se va! 👉 Nos queda <strong>x'z</strong></li>
+                <li><strong>Equipo Azul (x=1, yz=11 y 10):</strong> La 'x' se queda en 1 (x), la 'y' se queda en 1 (y). La 'z' cambió... ¡se va! 👉 Nos queda <strong>xy</strong></li>
+                <li><strong>Equipo Verde (x=0 y 1, yz=00):</strong> La 'y' y la 'z' se quedan en 0 (y'z'). Pero la 'x' saltó de 0 a 1 por las orillas mágicas... ¡se va! 👉 Nos queda <strong>y'z'</strong></li>
+            </ul>
+
+            <p>¡Nuestra súper fórmula secreta, ya cortita y fácil, es la suma de los tres equipos!</p>
+            <div class="equation">S = x'z + xy + y'z'</div>
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="step-card card-4">
+            <h2>🧱 Paso 4: ¡A Construir con Bloques! (El Circuito)</h2>
+            <p>Para armar el juguete de verdad en electrónica, usamos compuertas, que son como piecitas de Lego especiales. Solo necesitas saber qué hace cada piececita:</p>
+
+            <div class="lego-block">
+                <h3>🚫 Las compuertas NOT (Los Rebeldes)</h3>
+                <p>Son los que te ponen la gorrita (la comilla). Si entra una <strong>x</strong>, sale una <strong>x'</strong>. Si le das un 1, te devuelve un 0. Necesitas tres de estas para fabricar las letras rebeldes: x', y', y z'.</p>
+            </div>
+
+            <div class="lego-block">
+                <h3>🤝 Las compuertas AND (Los Estrictos)</h3>
+                <p>Son piececitas multiplicadoras que juntan a los miembros de un equipo. Necesitas tres de estas cajitas para los tres equipos que formamos:</p>
+                <ul>
+                    <li>Cajita AND 1: Junta a la <strong>x'</strong> con la <strong>z</strong>.</li>
+                    <li>Cajita AND 2: Junta a la <strong>x</strong> con la <strong>y</strong>.</li>
+                    <li>Cajita AND 3: Junta a la <strong>y'</strong> con la <strong>z'</strong>.</li>
                 </ul>
             </div>
 
-            <!-- 1566 -->
-            <div class="mb-8">
-                <h3 class="text-xl font-bold mb-4">Número decimal: 1566</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-300 text-center">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="py-2 px-4 border-b">Dígito Decimal</th>
-                                <th class="py-2 px-4 border-b">Conversión BCD (4 bits)</th>
-                                <th class="py-2 px-4 border-b">Operación Exceso-3 $(d_i + 3)$</th>
-                                <th class="py-2 px-4 border-b">Conversión Exceso-3 (4 bits)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">1</td>
-                                <td class="py-2 px-4 border-b">0001</td>
-                                <td class="py-2 px-4 border-b">$1 + 3 = 4$</td>
-                                <td class="py-2 px-4 border-b">0100</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">5</td>
-                                <td class="py-2 px-4 border-b">0101</td>
-                                <td class="py-2 px-4 border-b">$5 + 3 = 8$</td>
-                                <td class="py-2 px-4 border-b">1000</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">6</td>
-                                <td class="py-2 px-4 border-b">0110</td>
-                                <td class="py-2 px-4 border-b">$6 + 3 = 9$</td>
-                                <td class="py-2 px-4 border-b">1001</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">6</td>
-                                <td class="py-2 px-4 border-b">0110</td>
-                                <td class="py-2 px-4 border-b">$6 + 3 = 9$</td>
-                                <td class="py-2 px-4 border-b">1001</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 space-y-1">
-                    <p><strong>Resultado BCD:</strong> <span class="tracking-widest text-blue-700">0001 0101 0110 0110</span></p>
-                    <p><strong>Resultado Exceso-3:</strong> <span class="tracking-widest text-green-700">0100 1000 1001 1001</span></p>
-                </div>
+            <div class="lego-block">
+                <h3>🎉 La compuerta OR (La Gran Fiesta)</h3>
+                <p>Es una cajita sumadora, súper amigable. Solo necesitas una cajita OR grandota al final del camino. Vas a conectar los cables de las tres cajitas AND hacia esta compuerta OR. ¡Ella junta a todos los equipos y saca tu resultado final <strong>S</strong>!</p>
             </div>
-
-            <!-- 248 -->
-            <div class="mb-8">
-                <h3 class="text-xl font-bold mb-4">Número decimal: 248</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-300 text-center">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="py-2 px-4 border-b">Dígito Decimal</th>
-                                <th class="py-2 px-4 border-b">Conversión BCD (4 bits)</th>
-                                <th class="py-2 px-4 border-b">Operación Exceso-3 $(d_i + 3)$</th>
-                                <th class="py-2 px-4 border-b">Conversión Exceso-3 (4 bits)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">2</td>
-                                <td class="py-2 px-4 border-b">0010</td>
-                                <td class="py-2 px-4 border-b">$2 + 3 = 5$</td>
-                                <td class="py-2 px-4 border-b">0101</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">4</td>
-                                <td class="py-2 px-4 border-b">0100</td>
-                                <td class="py-2 px-4 border-b">$4 + 3 = 7$</td>
-                                <td class="py-2 px-4 border-b">0111</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">8</td>
-                                <td class="py-2 px-4 border-b">1000</td>
-                                <td class="py-2 px-4 border-b">$8 + 3 = 11$</td>
-                                <td class="py-2 px-4 border-b">1011</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 space-y-1">
-                    <p><strong>Resultado BCD:</strong> <span class="tracking-widest text-blue-700">0010 0100 1000</span></p>
-                    <p><strong>Resultado Exceso-3:</strong> <span class="tracking-widest text-green-700">0101 0111 1011</span></p>
-                </div>
-            </div>
-
-            <!-- 38 -->
-            <div>
-                <h3 class="text-xl font-bold mb-4">Número decimal: 38</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-300 text-center">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="py-2 px-4 border-b">Dígito Decimal</th>
-                                <th class="py-2 px-4 border-b">Conversión BCD (4 bits)</th>
-                                <th class="py-2 px-4 border-b">Operación Exceso-3 $(d_i + 3)$</th>
-                                <th class="py-2 px-4 border-b">Conversión Exceso-3 (4 bits)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">3</td>
-                                <td class="py-2 px-4 border-b">0011</td>
-                                <td class="py-2 px-4 border-b">$3 + 3 = 6$</td>
-                                <td class="py-2 px-4 border-b">0110</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 px-4 border-b font-bold">8</td>
-                                <td class="py-2 px-4 border-b">1000</td>
-                                <td class="py-2 px-4 border-b">$8 + 3 = 11$</td>
-                                <td class="py-2 px-4 border-b">1011</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 space-y-1">
-                    <p><strong>Resultado BCD:</strong> <span class="tracking-widest text-blue-700">0011 1000</span></p>
-                    <p><strong>Resultado Exceso-3:</strong> <span class="tracking-widest text-green-700">0110 1011</span></p>
-                </div>
-            </div>
-        </section>
-
+            
+            <p style="text-align: center; font-size: 1.2em; margin-top: 20px;"><strong>¡Y listo! ¡Has resuelto el acertijo y armado tu circuito como todo un experto! 🚀</strong></p>
+        </div>
     </div>
+
 </body>
 </html>
